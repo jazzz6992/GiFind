@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.vsevolodvisnevskij.giphy"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+
+dependencies {
+    implementation project(path: ':data')
+    def dependancy = rootProject.ext.dependencies
+    implementation dependancy.supportAppcompat
+    implementation dependancy.supportV4
+    implementation dependancy.supportDesign
+    implementation dependancy.rxAndroid
+    implementation dependancy.archComponentsExtention
+    annotationProcessor dependancy.archComponentCompiler
+    implementation dependancy.dagger
+    annotationProcessor dependancy.daggerCompiler
+    implementation dependancy.cardView
+    implementation dependancy.glide
+    annotationProcessor dependancy.glideCompiler
+}
