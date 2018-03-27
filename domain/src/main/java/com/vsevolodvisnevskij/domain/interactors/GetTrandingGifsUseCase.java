@@ -23,7 +23,7 @@ public class GetTrandingGifsUseCase extends BaseUseCase {
         this.userRepository = gifRepository;
     }
 
-    public Observable<List<Gif>> get(String key, String offset) {
-        return userRepository.getGifs(key, offset).subscribeOn(threadExecution).observeOn(postExecutionThread);
+    public Observable<List<Gif>> get(String offset) {
+        return userRepository.getTaradingGifs(offset).subscribeOn(threadExecution).observeOn(postExecutionThread);
     }
 }

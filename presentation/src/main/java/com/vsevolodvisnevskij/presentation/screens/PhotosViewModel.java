@@ -7,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vsevolodvisnevskij.domain.entity.Gif;
-import com.vsevolodvisnevskij.domain.interactors.GetSearchGifsUseCase;
+import com.vsevolodvisnevskij.domain.interactors.SearchGifsUseCase;
 import com.vsevolodvisnevskij.domain.interactors.GetTrandingGifsUseCase;
 import com.vsevolodvisnevskij.giphy.R;
 import com.vsevolodvisnevskij.giphy.databinding.GifItemBinding;
 import com.vsevolodvisnevskij.presentation.app.App;
 import com.vsevolodvisnevskij.presentation.base.BaseViewModel;
-import com.vsevolodvisnevskij.presentation.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class PhotosViewModel extends BaseViewModel {
     @Inject
     public GetTrandingGifsUseCase getTrandingGifsUseCase;
     @Inject
-    public GetSearchGifsUseCase getSearchGifsUseCase;
+    public SearchGifsUseCase SearchGifsUseCase;
 
     private GifAdapter adapter = new GifAdapter();
 
@@ -103,7 +102,7 @@ public class PhotosViewModel extends BaseViewModel {
     }
 
     private void getNextSearch(String q, String offset) {
-        getSearchGifsUseCase.get(Constants.KEY, q, offset).subscribe(new Observer<List<Gif>>() {
+        SearchGifsUseCase.get(q, offset).subscribe(new Observer<List<Gif>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 compositeDisposable.add(d);
@@ -127,7 +126,7 @@ public class PhotosViewModel extends BaseViewModel {
     }
 
     private void getNextTranding(String offset) {
-        getTrandingGifsUseCase.get(Constants.KEY, offset).subscribe(new Observer<List<Gif>>() {
+        getTrandingGifsUseCase.get(offset).subscribe(new Observer<List<Gif>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 compositeDisposable.add(d);

@@ -2,6 +2,7 @@ package com.vsevolodvisnevskij.data.repository;
 
 import android.content.Context;
 
+import com.vsevolodvisnevskij.data.constants.Constants;
 import com.vsevolodvisnevskij.data.net.RestService;
 import com.vsevolodvisnevskij.domain.entity.Gif;
 import com.vsevolodvisnevskij.domain.repository.GifRepository;
@@ -27,13 +28,12 @@ public class GifRepositoryImpl implements GifRepository {
     }
 
     @Override
-    public Observable<List<Gif>> getGifs(String... query) {
-        switch (query.length) {
-            case 2:
-                return restService.loadTrending(query[0], query[1]);
-            case 3:
-                return restService.loadSearch(query[0], query[1], query[2]);
-        }
-        return null;
+    public Observable<List<Gif>> getTaradingGifs(String offset) {
+        return restService.loadTrending(Constants.KEY, offset);
+    }
+
+    @Override
+    public Observable<List<Gif>> searchGifs(String offset, String search) {
+        return restService.loadSearch(Constants.KEY, offset, search);
     }
 }

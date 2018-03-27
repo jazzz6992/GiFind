@@ -11,5 +11,6 @@ import io.reactivex.Observable;
  */
 
 public interface GifRepository {
-    Observable<List<Gif>> getGifs(String... q);
+    Observable<List<Gif>> searchGifs(String offset, String search);
+    Observable<List<Gif>> getTaradingGifs(String offset);
 }

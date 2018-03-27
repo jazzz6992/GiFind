@@ -1,4 +1,4 @@
-package com.vsevolodvisnevskij.presentation.constants;
+package com.vsevolodvisnevskij.data.constants;
 
 /**
  * Created by vsevolodvisnevskij on 27.03.2018.

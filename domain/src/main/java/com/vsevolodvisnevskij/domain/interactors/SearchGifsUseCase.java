@@ -14,16 +14,16 @@ import io.reactivex.Observable;
  * Created by vsevolodvisnevskij on 27.03.2018.
  */
 
-public class GetSearchGifsUseCase extends BaseUseCase {
+public class SearchGifsUseCase extends BaseUseCase {
     private GifRepository gifRepository;
 
     @Inject
-    public GetSearchGifsUseCase(PostExecutionThread postExecutionThread, GifRepository gifRepository) {
+    public SearchGifsUseCase(PostExecutionThread postExecutionThread, GifRepository gifRepository) {
         super(postExecutionThread);
         this.gifRepository = gifRepository;
     }
 
-    public Observable<List<Gif>> get(String key, String q, String offset) {
-        return gifRepository.getGifs(key, q, offset).subscribeOn(threadExecution).observeOn(postExecutionThread);
+    public Observable<List<Gif>> get(String q, String offset) {
+        return gifRepository.searchGifs(q, offset).subscribeOn(threadExecution).observeOn(postExecutionThread);
     }
 }
