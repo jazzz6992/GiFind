@@ -15,8 +15,8 @@ import com.vsevolodvisnevskij.presentation.screens.main.PhotosViewModel;
 public class BindingAdapters {
 
     @BindingAdapter({"adapter"})
-    public static void initRecyclerView(RecyclerView recyclerView, PhotosViewModel.GifAdapter userAdapter) {
-        recyclerView.setAdapter(userAdapter);
+    public static void initRecyclerView(RecyclerView recyclerView, PhotosViewModel.GifAdapter gifAdapter) {
+        recyclerView.setAdapter(gifAdapter);
     }
 
     @BindingAdapter({"src"})
