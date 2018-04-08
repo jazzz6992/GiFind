@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.vsevolodvisnevskij.presentation.screens.PhotosViewModel;
+import com.vsevolodvisnevskij.presentation.screens.main.PhotosViewModel;
 
 /**
  * Created by vsevolodvisnevskij on 22.03.2018.

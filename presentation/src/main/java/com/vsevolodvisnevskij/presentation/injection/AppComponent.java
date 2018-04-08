@@ -1,6 +1,7 @@
 package com.vsevolodvisnevskij.presentation.injection;
 
-import com.vsevolodvisnevskij.presentation.screens.PhotosViewModel;
+import com.vsevolodvisnevskij.presentation.screens.detail.SingleGifViewModel;
+import com.vsevolodvisnevskij.presentation.screens.main.PhotosViewModel;
 
 import javax.inject.Singleton;
 
@@ -14,4 +15,6 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
     void inject(PhotosViewModel photosViewModel);
+
+    void inject(SingleGifViewModel singleGifViewModel);
 }

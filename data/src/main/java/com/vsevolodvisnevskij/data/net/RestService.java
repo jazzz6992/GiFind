@@ -31,7 +31,8 @@ public class RestService {
             List<Gif> gifs = new ArrayList<>();
             for (Datum d : r.getData()) {
                 Gif gif = new Gif();
-                gif.setUrl(d.getImages().getPreviewGif().getUrl());
+                gif.setPreviewUrl(d.getImages().getPreviewGif().getUrl());
+                gif.setOriginalUrl(d.getImages().getOriginal().getUrl());
                 gifs.add(gif);
             }
             return gifs;
@@ -43,7 +44,7 @@ public class RestService {
             List<Gif> gifs = new ArrayList<>();
             for (Datum d : r.getData()) {
                 Gif gif = new Gif();
-                gif.setUrl(d.getImages().getPreviewGif().getUrl());
+                gif.setPreviewUrl(d.getImages().getPreviewGif().getUrl());
                 gifs.add(gif);
             }
             return gifs;

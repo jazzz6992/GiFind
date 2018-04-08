@@ -1,20 +1,19 @@
-package com.vsevolodvisnevskij.presentation.screens;
+package com.vsevolodvisnevskij.presentation.screens.main;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.vsevolodvisnevskij.domain.entity.Gif;
-import com.vsevolodvisnevskij.domain.interactors.SearchGifsUseCase;
 import com.vsevolodvisnevskij.domain.interactors.GetTrandingGifsUseCase;
+import com.vsevolodvisnevskij.domain.interactors.SearchGifsUseCase;
 import com.vsevolodvisnevskij.giphy.R;
 import com.vsevolodvisnevskij.giphy.databinding.GifItemBinding;
 import com.vsevolodvisnevskij.presentation.app.App;
+import com.vsevolodvisnevskij.presentation.base.BaseAdapter;
+import com.vsevolodvisnevskij.presentation.base.BaseViewHolder;
 import com.vsevolodvisnevskij.presentation.base.BaseViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,7 +25,7 @@ import io.reactivex.disposables.Disposable;
  * Created by vsevolodvisnevskij on 26.03.2018.
  */
 
-public class PhotosViewModel extends BaseViewModel {
+public class PhotosViewModel extends BaseViewModel<MainRouter> {
 
 
     @Inject
@@ -38,57 +37,58 @@ public class PhotosViewModel extends BaseViewModel {
 
     private String search;
 
+    public PhotosViewModel() {
+        compositeDisposable.add(adapter.getClickSubject().subscribe(g -> {
+            router.navigateToDetailActivity(g.getOriginalUrl());
+        }));
+        getNextGifs("0");
+    }
+
     @Override
     public void createInject() {
         App.getAppComponent().inject(this);
     }
 
 
-    class GifHolder extends RecyclerView.ViewHolder {
+    class GifHolder extends BaseViewHolder<Gif, ItemGifViewModel, GifItemBinding> {
         public GifItemBinding binding;
 
-        public GifHolder(View itemView) {
-            super(itemView);
-            binding = DataBindingUtil.bind(itemView);
-            binding.setViewModel(new ItemGifViewModel());
+
+        public GifHolder(GifItemBinding binding, ItemGifViewModel viewModel) {
+            super(binding, viewModel);
         }
     }
 
-    public class GifAdapter extends RecyclerView.Adapter<GifHolder> {
-        private List<Gif> gifs = new ArrayList<>();
+    public class GifAdapter extends BaseAdapter<Gif, ItemGifViewModel> {
 
-        public void addUserEntities(List<Gif> gifList) {
-            this.gifs.addAll(gifList);
-        }
 
         @Override
         public GifHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             GifItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.gif_item, parent, false);
-            return new GifHolder(binding.getRoot());
+            return new GifHolder(binding, new ItemGifViewModel());
         }
 
         @Override
-        public void onBindViewHolder(GifHolder holder, int position) {
-            holder.binding.getViewModel().setEntity(gifs.get(position));
-            if (position == gifs.size() - 1) {
+        public void onBindViewHolder(BaseViewHolder<Gif, ItemGifViewModel, ?> holder, int position) {
+            super.onBindViewHolder(holder, position);
+            if (position == items.size() - 1) {
                 getNextGifs(String.valueOf(position));
             }
         }
 
         @Override
         public int getItemCount() {
-            return gifs.size();
+            return items.size();
         }
 
         public void clear() {
-            gifs.clear();
+            items.clear();
         }
 
         public void update(List<Gif> gifs) {
             if (gifs.size() != 0) {
-                adapter.addUserEntities(gifs);
-                adapter.notifyDataSetChanged();
+                adapter.addItems(gifs);
             }
         }
     }
@@ -97,9 +97,6 @@ public class PhotosViewModel extends BaseViewModel {
         return adapter;
     }
 
-    public PhotosViewModel() {
-        getNextTranding("0");
-    }
 
     private void getNextSearch(String q, String offset) {
         SearchGifsUseCase.get(q, offset).subscribe(new Observer<List<Gif>>() {

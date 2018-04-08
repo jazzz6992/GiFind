@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.vsevolodvisnevskij.presentation.screens.PhotosViewModel" />
+            type="com.vsevolodvisnevskij.presentation.screens.main.PhotosViewModel" />
     </data>
 
     <android.support.v7.widget.RecyclerView

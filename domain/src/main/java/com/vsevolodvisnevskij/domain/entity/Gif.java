@@ -5,13 +5,22 @@ package com.vsevolodvisnevskij.domain.entity;
  */
 
 public class Gif {
-    private String url;
+    private String previewUrl;
+    private String originalUrl;
 
-    public String getUrl() {
-        return url;
+    public String getPreviewUrl() {
+        return previewUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPreviewUrl(String previewUrl) {
+        this.previewUrl = previewUrl;
+    }
+
+    public String getOriginalUrl() {
+        return originalUrl;
+    }
+
+    public void setOriginalUrl(String originalUrl) {
+        this.originalUrl = originalUrl;
     }
 }
