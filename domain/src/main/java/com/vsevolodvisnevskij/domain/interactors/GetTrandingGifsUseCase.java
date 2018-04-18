@@ -15,15 +15,15 @@ import io.reactivex.Observable;
  */
 
 public class GetTrandingGifsUseCase extends BaseUseCase {
-    private GifRepository userRepository;
+    private GifRepository gifRepository;
 
     @Inject
     public GetTrandingGifsUseCase(PostExecutionThread postExecutionThread, GifRepository gifRepository) {
         super(postExecutionThread);
-        this.userRepository = gifRepository;
+        this.gifRepository = gifRepository;
     }
 
     public Observable<List<Gif>> get(String offset) {
-        return userRepository.getTaradingGifs(offset).subscribeOn(threadExecution).observeOn(postExecutionThread);
+        return gifRepository.getTaradingGifs(offset).subscribeOn(threadExecution).observeOn(postExecutionThread);
     }
 }

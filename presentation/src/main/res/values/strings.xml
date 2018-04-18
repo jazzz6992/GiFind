@@ -2,4 +2,6 @@
     <string name="app_name">Giphy</string>
     <string name="search">Search</string>
     <string name="original_gif">Original gif</string>
+    <string name="share">Share</string>
+    <string name="gif_preview">Gif preview</string>
 </resources>
