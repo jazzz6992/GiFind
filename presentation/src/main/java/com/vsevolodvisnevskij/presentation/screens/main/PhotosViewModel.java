@@ -39,7 +39,9 @@ public class PhotosViewModel extends BaseViewModel<MainRouter> {
 
     public PhotosViewModel() {
         compositeDisposable.add(adapter.getClickSubject().subscribe(g -> {
-            router.navigateToDetailActivity(g.getOriginalUrl());
+            if (router != null) {
+                router.navigateToDetailActivity(g.getOriginalUrl());
+            }
         }));
         getNextGifs("0");
     }

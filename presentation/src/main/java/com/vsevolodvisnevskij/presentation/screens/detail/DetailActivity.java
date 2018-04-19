@@ -63,63 +63,9 @@ public class DetailActivity extends BaseMVVMActivity<ActivityDetailBinding, Sing
         switch (item.getItemId()) {
             case R.id.share:
                 viewModel.share();
-//                DownloadTask task = new DownloadTask();
-//                task.execute(getIntent().getStringExtra(EXTRA_URL));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-//    public class DownloadTask extends AsyncTask<String, Void, File> {
-//
-//        @Override
-//        protected File doInBackground(String... strings) {
-//            String urlSpec = getIntent().getStringExtra(EXTRA_URL);
-//            File file = new File(getFilesDir(), "tmp.gif");
-//            URL url = null;
-//            try {
-//                url = new URL(urlSpec);
-//                HttpsURLConnection httpURLConnection = (HttpsURLConnection) url.openConnection();
-//                try {
-//                    InputStream in = httpURLConnection.getInputStream();
-//                    if (httpURLConnection.getResponseCode() != HttpsURLConnection.HTTP_OK) {
-//                        throw new IOException(httpURLConnection.getResponseMessage() + ": with " + urlSpec);
-//                    }
-//                    try (FileOutputStream fos = new FileOutputStream(file)) {
-//                        int bufSize;
-//                        byte[] buf = new byte[4096];
-//                        while ((bufSize = in.read(buf)) > 0) {
-//                            fos.write(buf, 0, bufSize);
-//                        }
-//                    }
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    httpURLConnection.disconnect();
-//                }
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return file;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(File file) {
-//            super.onPostExecute(file);
-//            Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType("image/gif");
-//            Uri uri = FileProvider.getUriForFile(DetailActivity.this, "com.vsevolodvisnevskij.presentation.fileprovider", file);
-//            intent.putExtra(Intent.EXTRA_STREAM, uri);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            List<ResolveInfo> cameraActivities = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-//            for (ResolveInfo activity : cameraActivities) {
-//                grantUriPermission(activity.activityInfo.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            }
-//            startActivity(intent);
-//        }
-//    }
 }
