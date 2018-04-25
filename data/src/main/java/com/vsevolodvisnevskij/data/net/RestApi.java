@@ -1,7 +1,7 @@
 package com.vsevolodvisnevskij.data.net;
 
 
-import com.vsevolodvisnevskij.data.entity.Root;
+import com.vsevolodvisnevskij.data.entity.json.Root;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

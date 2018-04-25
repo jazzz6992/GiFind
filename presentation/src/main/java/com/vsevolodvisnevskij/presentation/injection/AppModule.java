@@ -1,8 +1,10 @@
 package com.vsevolodvisnevskij.presentation.injection;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.vsevolodvisnevskij.data.db.AppDatabase;
 import com.vsevolodvisnevskij.data.net.RestApi;
 import com.vsevolodvisnevskij.data.net.RestService;
 import com.vsevolodvisnevskij.data.repository.GifRepositoryImpl;
@@ -14,7 +16,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -44,7 +45,6 @@ public class AppModule {
         return new UIThread();
     }
 
-
     @Provides
     @Singleton
     public Retrofit getRetrofit() {
@@ -58,8 +58,15 @@ public class AppModule {
     }
 
     @Provides
-    public GifRepository getGitRepository(Context context, RestService restService) {
-        return new GifRepositoryImpl(context, restService);
+    public GifRepository getGitRepository(Context context, RestService restService, AppDatabase appDatabase) {
+        return new GifRepositoryImpl(context, restService, appDatabase);
+    }
+
+    @Provides
+    @Singleton
+    public AppDatabase getAppDatabase(Context context) {
+        return Room.databaseBuilder(context, AppDatabase.class, "database").fallbackToDestructiveMigration().build();
+
     }
 
 }

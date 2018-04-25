@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -36,12 +36,14 @@ ext {
     retrofitVersion = '2.4.0'
     retrofitRxAdapterVersion = '1.0.0'
     glideVersion = '4.6.1'
+    constraintLayoutVersion = '1.1.0'
 
     dependencies = [
             supportAppcompat       : "com.android.support:appcompat-v7:$buildToolsVersion",
             supportV4              : "com.android.support:support-v4:$buildToolsVersion",
             supportDesign          : "com.android.support:design:$buildToolsVersion",
             cardView               : "com.android.support:cardview-v7:$buildToolsVersion",
+            constraintLayout       : "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
             rxJava                 : "io.reactivex.rxjava2:rxjava:$rxJavaVersion",
             rxAndroid              : "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion",
             gson                   : "com.google.code.gson:gson:$gsonVersion",
@@ -54,7 +56,10 @@ ext {
             retrofitGsonConverter  : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
             retrofitRxAdapter      : "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$retrofitRxAdapterVersion",
             glide                  : "com.github.bumptech.glide:glide:$glideVersion",
-            glideCompiler          : "com.github.bumptech.glide:compiler:$glideVersion"
+            glideCompiler          : "com.github.bumptech.glide:compiler:$glideVersion",
+            room                   : "android.arch.persistence.room:runtime:$archComponentVersion",
+            roomCompiler           : "android.arch.persistence.room:compiler:$archComponentVersion",
+            rxRoom                 : "android.arch.persistence.room:rxjava2:$archComponentVersion"
     ]
 }
 

@@ -5,8 +5,17 @@ package com.vsevolodvisnevskij.domain.entity;
  */
 
 public class Gif {
+    private String id;
     private String previewUrl;
     private String originalUrl;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getPreviewUrl() {
         return previewUrl;

@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.vsevolodvisnevskij.presentation.screens.main.ItemLinkGifViewModel" />
+            type="com.vsevolodvisnevskij.presentation.screens.main.ItemPathGifViewModel" />
     </data>
 
     <ImageView
-        android:layout_height="120dp"
-        app:src="@{viewModel.getName()}"
-        style="@style/gif_preview" />
+        style="@style/gif_preview"
+        android:layout_height="wrap_content"
+        app:src="@{viewModel.getName()}" />
 </layout>

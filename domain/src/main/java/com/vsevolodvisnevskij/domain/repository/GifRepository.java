@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 /**
@@ -14,8 +15,18 @@ import io.reactivex.Observable;
 
 public interface GifRepository {
     Observable<List<Gif>> searchGifs(String offset, String search);
+
     Observable<List<Gif>> getTaradingGifs(String offset);
 
+    Observable<File> download(String link, String name);
 
-    Observable<File> download(String link);
+    Completable addToFavorites(String id, String path);
+
+    Flowable<List<String>> getLocalGifs();
+
+    Flowable<Boolean> checkLocalGif(String id);
+
+    Completable delete(String name);
+
+    Completable removeFromFavorites(String id);
 }

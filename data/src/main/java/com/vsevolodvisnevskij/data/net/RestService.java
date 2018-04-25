@@ -1,8 +1,8 @@
 package com.vsevolodvisnevskij.data.net;
 
 
-import com.vsevolodvisnevskij.data.entity.Datum;
-import com.vsevolodvisnevskij.data.entity.Root;
+import com.vsevolodvisnevskij.data.entity.json.Datum;
+import com.vsevolodvisnevskij.data.entity.json.Root;
 import com.vsevolodvisnevskij.domain.entity.Gif;
 
 import java.util.ArrayList;
@@ -39,6 +39,7 @@ public class RestService {
         List<Gif> gifs = new ArrayList<>();
         for (Datum d : r.getData()) {
             Gif gif = new Gif();
+            gif.setId(d.getId());
             gif.setPreviewUrl(d.getImages().getPreviewGif().getUrl());
             gif.setOriginalUrl(d.getImages().getOriginal().getUrl());
             gifs.add(gif);

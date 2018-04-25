@@ -3,17 +3,16 @@ package com.vsevolodvisnevskij.presentation.base;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.vsevolodvisnevskij.giphy.BR;
 
-
-/**
- * Created by vsevolodvisnevskij on 12.03.2018.
- */
-
-public abstract class BaseMVVMActivity<Binding extends ViewDataBinding, ViewModel extends BaseViewModel, R extends BaseRouter> extends AppCompatActivity {
+public abstract class BaseMVVMFragment<Binding extends ViewDataBinding, ViewModel extends BaseViewModel, R extends BaseRouter> extends Fragment {
     protected Binding binding;
     protected ViewModel viewModel;
     protected R router;
@@ -24,42 +23,43 @@ public abstract class BaseMVVMActivity<Binding extends ViewDataBinding, ViewMode
 
     public abstract R provideRouter();
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, provideLayoutId());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, provideLayoutId(), container, false);
         viewModel = provideViewModel();
         binding.setVariable(BR.viewModel, viewModel);
         router = provideRouter();
         viewModel.attachRouter(router);
+        return binding.getRoot();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         viewModel.onResume();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         viewModel.onPause();
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         viewModel.onStart();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         viewModel.onStop();
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         router = null;
         viewModel.detachRouter();

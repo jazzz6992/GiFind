@@ -2,10 +2,10 @@ package com.vsevolodvisnevskij.presentation.base;
 
 import android.app.Activity;
 
-public class Router {
+public class BaseRouter {
     private Activity activity;
 
-    public Router(Activity activity) {
+    public BaseRouter(Activity activity) {
         this.activity = activity;
     }
 

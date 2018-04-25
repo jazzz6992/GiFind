@@ -9,7 +9,7 @@ import io.reactivex.disposables.CompositeDisposable;
  * Created by vsevolodvisnevskij on 12.03.2018.
  */
 
-public abstract class BaseViewModel<R extends Router> extends ViewModel {
+public abstract class BaseViewModel<R extends BaseRouter> extends ViewModel {
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Nullable
     protected R router;

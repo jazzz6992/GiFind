@@ -1,9 +1,9 @@
+package com.vsevolodvisnevskij.data.entity.json;
 
-package com.vsevolodvisnevskij.data.entity;
-
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Root {
 

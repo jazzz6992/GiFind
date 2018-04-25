@@ -3,16 +3,22 @@ package com.vsevolodvisnevskij.presentation.screens.main;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.vsevolodvisnevskij.presentation.base.Router;
+import com.vsevolodvisnevskij.domain.entity.Gif;
+import com.vsevolodvisnevskij.presentation.base.BaseRouter;
 import com.vsevolodvisnevskij.presentation.screens.detail.DetailActivity;
 
-public class MainRouter extends Router {
+public class MainRouter extends BaseRouter {
     public MainRouter(Activity activity) {
         super(activity);
     }
 
-    public void navigateToDetailActivity(String url) {
-        Intent intent = DetailActivity.newIntent(getActivity(), url);
+    public void navigateToDetailActivity(Gif g) {
+        Intent intent = DetailActivity.newIntent(getActivity(), g);
+        getActivity().startActivity(intent);
+    }
+
+    public void navigateToDetailActivity(String path) {
+        Intent intent = DetailActivity.newIntent(getActivity(), path);
         getActivity().startActivity(intent);
     }
 }

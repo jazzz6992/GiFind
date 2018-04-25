@@ -4,4 +4,9 @@
     <string name="original_gif">Original gif</string>
     <string name="share">Share</string>
     <string name="gif_preview">Gif preview</string>
+    <string name="add_to_favorite">Add to favorite</string>
+    <string-array name="tab_names">
+        <item>Web</item>
+        <item>Favorites</item>
+    </string-array>
 </resources>

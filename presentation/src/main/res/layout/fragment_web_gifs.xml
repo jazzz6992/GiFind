@@ -1,0 +1,14 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.vsevolodvisnevskij.presentation.screens.main.WebGifsViewModel" />
+    </data>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        app:adapter="@{viewModel.getAdapter()}"
+        style="@style/match_parent" />
+</layout>

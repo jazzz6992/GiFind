@@ -13,18 +13,12 @@ public abstract class BaseViewHolder<Model, ViewModel extends BaseItemViewModel<
         super(binding.getRoot());
         this.binding = binding;
         this.viewModel = viewModel;
-        viewModel.init();
         initViewModel();
     }
 
     private void initViewModel() {
         binding.setVariable(BR.viewModel, viewModel);
     }
-
-    public void release() {
-        viewModel.release();
-    }
-
 
     public ViewModel getViewModel() {
         return viewModel;

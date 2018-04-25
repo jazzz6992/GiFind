@@ -7,12 +7,12 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 
-import com.vsevolodvisnevskij.presentation.base.Router;
+import com.vsevolodvisnevskij.presentation.base.BaseRouter;
 
 import java.io.File;
 import java.util.List;
 
-public class DetailRouter extends Router {
+public class DetailRouter extends BaseRouter {
     public DetailRouter(Activity activity) {
         super(activity);
     }

@@ -14,36 +14,35 @@ import com.vsevolodvisnevskij.presentation.base.BaseAdapter;
 import com.vsevolodvisnevskij.presentation.base.BaseViewHolder;
 import com.vsevolodvisnevskij.presentation.base.BaseViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Created by vsevolodvisnevskij on 26.03.2018.
  */
 
-public class PhotosViewModel extends BaseViewModel<MainRouter> {
+public class WebGifsViewModel extends BaseViewModel<MainRouter> {
 
 
     @Inject
     public GetTrandingGifsUseCase getTrandingGifsUseCase;
     @Inject
-    public SearchGifsUseCase SearchGifsUseCase;
+    public SearchGifsUseCase searchGifsUseCase;
 
     private GifAdapter adapter = new GifAdapter();
 
     private String search;
+    private int offset = 0;
 
-    public PhotosViewModel() {
+    public WebGifsViewModel() {
         compositeDisposable.add(adapter.getClickSubject().subscribe(g -> {
             if (router != null) {
-                router.navigateToDetailActivity(g.getOriginalUrl());
+                router.navigateToDetailActivity(g);
             }
         }));
-        getNextGifs("0");
+        getNextGifs(String.valueOf(offset));
     }
 
     @Override
@@ -52,30 +51,30 @@ public class PhotosViewModel extends BaseViewModel<MainRouter> {
     }
 
 
-    class GifHolder extends BaseViewHolder<Gif, ItemGifViewModel, GifItemBinding> {
+    class GifHolder extends BaseViewHolder<Gif, ItemLinkGifViewModel, GifItemBinding> {
         public GifItemBinding binding;
 
 
-        public GifHolder(GifItemBinding binding, ItemGifViewModel viewModel) {
+        public GifHolder(GifItemBinding binding, ItemLinkGifViewModel viewModel) {
             super(binding, viewModel);
         }
     }
 
-    public class GifAdapter extends BaseAdapter<Gif, ItemGifViewModel> {
+    public class GifAdapter extends BaseAdapter<Gif, ItemLinkGifViewModel> {
 
 
         @Override
         public GifHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             GifItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.gif_item, parent, false);
-            return new GifHolder(binding, new ItemGifViewModel());
+            return new GifHolder(binding, new ItemLinkGifViewModel());
         }
 
         @Override
-        public void onBindViewHolder(BaseViewHolder<Gif, ItemGifViewModel, ?> holder, int position) {
+        public void onBindViewHolder(BaseViewHolder<Gif, ItemLinkGifViewModel, ?> holder, int position) {
             super.onBindViewHolder(holder, position);
             if (position == items.size() - 1) {
-                getNextGifs(String.valueOf(position));
+                getNextGifs(String.valueOf(offset));
             }
         }
 
@@ -90,7 +89,14 @@ public class PhotosViewModel extends BaseViewModel<MainRouter> {
 
         public void update(List<Gif> gifs) {
             if (gifs.size() != 0) {
-                adapter.addItems(gifs);
+                offset += gifs.size();
+                List<Gif> gifs1 = new ArrayList<>();
+                for (Gif g : gifs) {
+                    if (g.getPreviewUrl() != null) {
+                        gifs1.add(g);
+                    }
+                }
+                adapter.addItems(gifs1);
             }
         }
     }
@@ -101,57 +107,18 @@ public class PhotosViewModel extends BaseViewModel<MainRouter> {
 
 
     private void getNextSearch(String q, String offset) {
-        SearchGifsUseCase.get(q, offset).subscribe(new Observer<List<Gif>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                compositeDisposable.add(d);
-            }
-
-            @Override
-            public void onNext(List<Gif> gifs) {
-                adapter.update(gifs);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
+        compositeDisposable.add(searchGifsUseCase.get(q, offset).subscribe(l -> adapter.update(l)));
     }
 
     private void getNextTranding(String offset) {
-        getTrandingGifsUseCase.get(offset).subscribe(new Observer<List<Gif>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                compositeDisposable.add(d);
-            }
-
-            @Override
-            public void onNext(List<Gif> gifs) {
-                adapter.update(gifs);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
+        compositeDisposable.add(getTrandingGifsUseCase.get(offset).subscribe(l -> adapter.update(l)));
     }
 
     public void search(String search) {
         this.search = search;
         adapter.clear();
-        getNextGifs("0");
+        offset = 0;
+        getNextGifs(String.valueOf(offset));
     }
 
     public void getNextGifs(String offset) {
