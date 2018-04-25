@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">GifFind</string>
+    <string name="app_name" translatable="false">GiFind</string>
     <string name="search">Search</string>
     <string name="original_gif">Original gif</string>
     <string name="share">Share</string>
