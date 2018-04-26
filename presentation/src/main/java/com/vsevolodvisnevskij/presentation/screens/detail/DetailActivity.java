@@ -11,8 +11,6 @@ import com.vsevolodvisnevskij.giphy.R;
 import com.vsevolodvisnevskij.giphy.databinding.ActivityDetailBinding;
 import com.vsevolodvisnevskij.presentation.base.BaseMVVMActivity;
 
-import java.io.File;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class DetailActivity extends BaseMVVMActivity<ActivityDetailBinding, SingleGifViewModel, DetailRouter> {
@@ -69,9 +67,9 @@ public class DetailActivity extends BaseMVVMActivity<ActivityDetailBinding, Sing
         MenuItem item = menu.findItem(R.id.favorite);
         compositeDisposable.add(viewModel.checkFavorite().subscribe(b -> {
             if (b) {
-                item.setIcon(R.drawable.ic_favorite_black_24dp);
+                item.setIcon(R.drawable.ic_favorite_24dp);
             } else {
-                item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                item.setIcon(R.drawable.ic_favorite_border_24dp);
             }
         }));
         compositeDisposable.add(viewModel.getPublishSubject().subscribe(completable -> {
