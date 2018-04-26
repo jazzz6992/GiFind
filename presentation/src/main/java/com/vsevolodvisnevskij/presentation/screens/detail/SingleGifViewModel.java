@@ -112,9 +112,9 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
 
     private String getFileName() {
         if (!local) {
-            return context.getFilesDir() + "/" + gif.getId() + ".gif";
+            return gif.getId() + ".gif";
         } else {
-            return gif.getPath();
+            return gif.getPath().substring(gif.getPath().lastIndexOf("/") + 1);
         }
     }
 

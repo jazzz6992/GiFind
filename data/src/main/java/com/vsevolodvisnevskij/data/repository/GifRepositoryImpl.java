@@ -22,8 +22,6 @@ import javax.inject.Inject;
 import javax.net.ssl.HttpsURLConnection;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
@@ -56,7 +54,7 @@ public class GifRepositoryImpl implements GifRepository {
     @Override
     public Observable<File> download(String link, String name) {
         return Observable.create(emitter -> {
-            File file = new File(name);
+            File file = new File(context.getFilesDir(), name);
             URL url = null;
             try {
                 url = new URL(link);
@@ -122,7 +120,7 @@ public class GifRepositoryImpl implements GifRepository {
     @Override
     public Completable delete(String name) {
         return Completable.create(e -> {
-            File file = new File(name);
+            File file = new File(context.getFilesDir(), name);
             boolean delited = file.delete();
             if (delited) {
                 e.onComplete();
