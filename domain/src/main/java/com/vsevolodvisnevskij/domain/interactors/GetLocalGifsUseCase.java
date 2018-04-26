@@ -1,5 +1,6 @@
 package com.vsevolodvisnevskij.domain.interactors;
 
+import com.vsevolodvisnevskij.domain.entity.Gif;
 import com.vsevolodvisnevskij.domain.executor.PostExecutionThread;
 import com.vsevolodvisnevskij.domain.repository.GifRepository;
 
@@ -18,7 +19,7 @@ public class GetLocalGifsUseCase extends BaseUseCase {
         this.gifRepository = gifRepository;
     }
 
-    public Flowable<List<String>> getLocalGifs() {
+    public Flowable<List<Gif>> getLocalGifs() {
         return gifRepository.getLocalGifs().subscribeOn(threadExecution).observeOn(postExecutionThread);
     }
 }

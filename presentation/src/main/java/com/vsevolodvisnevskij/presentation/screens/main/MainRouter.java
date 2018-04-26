@@ -16,9 +16,4 @@ public class MainRouter extends BaseRouter {
         Intent intent = DetailActivity.newIntent(getActivity(), g);
         getActivity().startActivity(intent);
     }
-
-    public void navigateToDetailActivity(String path) {
-        Intent intent = DetailActivity.newIntent(getActivity(), path);
-        getActivity().startActivity(intent);
-    }
 }

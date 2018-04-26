@@ -36,7 +36,6 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
     private PublishSubject<Completable> publishSubject = PublishSubject.create();
     private boolean local;
     private Gif gif;
-    private File file;
     private ObservableField<String> gifUrl = new ObservableField<>();
     private final String tmpName = "tmp.gif";
 
@@ -47,15 +46,15 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
 
     public void setGif(Gif gif) {
         this.gif = gif;
-        gifUrl.set(gif.getOriginalUrl());
+        if (!local) {
+            gifUrl.set(gif.getOriginalUrl());
+        } else {
+            gifUrl.set(gif.getPath());
+        }
     }
 
     public PublishSubject<Completable> getPublishSubject() {
         return publishSubject;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     public void setLocal(boolean local) {
@@ -69,7 +68,7 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
     public void share() {
         if (local) {
             if (router != null) {
-                router.navigateToActivityChooser(file);
+                router.navigateToActivityChooser(new File(gif.getPath()));
             }
         } else {
             compositeDisposable.add(downloadGifFileUseCase.download(gifUrl.get(), tmpName).subscribe(f -> {
@@ -81,11 +80,7 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
     }
 
     public String getContent() {
-        if (local) {
-            return file.getAbsolutePath();
-        } else {
-            return getGifUrl();
-        }
+        return getGifUrl();
     }
 
     public void addToFavorite() {
@@ -117,18 +112,14 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
 
     private String getFileName() {
         if (!local) {
-            return gif.getId() + ".gif";
+            return context.getFilesDir() + "/" + gif.getId() + ".gif";
         } else {
-            return file.getName();
+            return gif.getPath();
         }
     }
 
     private String getId() {
-        if (!local) {
-            return gif.getId();
-        } else {
-            return file.getName().substring(0, file.getName().lastIndexOf("."));
-        }
+        return gif.getId();
     }
 
     public void toFromFavorites() {

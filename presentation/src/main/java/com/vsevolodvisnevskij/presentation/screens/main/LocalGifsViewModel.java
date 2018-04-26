@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.vsevolodvisnevskij.domain.entity.Gif;
 import com.vsevolodvisnevskij.domain.interactors.GetLocalGifsUseCase;
 import com.vsevolodvisnevskij.giphy.R;
 import com.vsevolodvisnevskij.giphy.databinding.PathItemBinding;
@@ -39,7 +40,7 @@ public class LocalGifsViewModel extends BaseViewModel<MainRouter> {
     }
 
 
-    class PathHolder extends BaseViewHolder<String, ItemPathGifViewModel, PathItemBinding> {
+    class PathHolder extends BaseViewHolder<Gif, ItemPathGifViewModel, PathItemBinding> {
         public PathItemBinding binding;
 
 
@@ -48,7 +49,7 @@ public class LocalGifsViewModel extends BaseViewModel<MainRouter> {
         }
     }
 
-    public class PathAdapter extends BaseAdapter<String, ItemPathGifViewModel> {
+    public class PathAdapter extends BaseAdapter<Gif, ItemPathGifViewModel> {
 
 
         @Override
@@ -63,7 +64,7 @@ public class LocalGifsViewModel extends BaseViewModel<MainRouter> {
             return items.size();
         }
 
-        public void update(List<String> paths) {
+        public void update(List<Gif> paths) {
             adapter.setItems(paths);
         }
     }

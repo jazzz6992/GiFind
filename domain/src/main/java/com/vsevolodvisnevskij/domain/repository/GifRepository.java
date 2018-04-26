@@ -22,7 +22,7 @@ public interface GifRepository {
 
     Completable addToFavorites(String id, String path);
 
-    Flowable<List<String>> getLocalGifs();
+    Flowable<List<Gif>> getLocalGifs();
 
     Flowable<Boolean> checkLocalGif(String id);
 

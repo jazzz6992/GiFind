@@ -8,6 +8,7 @@ public class Gif {
     private String id;
     private String previewUrl;
     private String originalUrl;
+    private String path;
 
     public String getId() {
         return id;
@@ -31,5 +32,13 @@ public class Gif {
 
     public void setOriginalUrl(String originalUrl) {
         this.originalUrl = originalUrl;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

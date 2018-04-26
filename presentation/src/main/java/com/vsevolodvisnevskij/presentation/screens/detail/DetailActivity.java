@@ -36,15 +36,15 @@ public class DetailActivity extends BaseMVVMActivity<ActivityDetailBinding, Sing
         Intent intent = getIntent();
         boolean local = intent.getBooleanExtra(EXTRA_LOCAL, false);
         singleGifViewModel.setLocal(local);
+        Gif gif = new Gif();
+        gif.setId(intent.getStringExtra(EXTRA_ID));
         if (local) {
-            singleGifViewModel.setFile(new File(intent.getStringExtra(EXTRA_PATH)));
+            gif.setPath(intent.getStringExtra(EXTRA_PATH));
         } else {
-            Gif gif = new Gif();
-            gif.setId(intent.getStringExtra(EXTRA_ID));
             gif.setOriginalUrl(intent.getStringExtra(EXTRA_ORIG));
             gif.setPreviewUrl(intent.getStringExtra(EXTRA_PREVIEW));
-            singleGifViewModel.setGif(gif);
         }
+        singleGifViewModel.setGif(gif);
         return singleGifViewModel;
     }
 
@@ -58,14 +58,8 @@ public class DetailActivity extends BaseMVVMActivity<ActivityDetailBinding, Sing
         intent.putExtra(EXTRA_ID, g.getId());
         intent.putExtra(EXTRA_PREVIEW, g.getPreviewUrl());
         intent.putExtra(EXTRA_ORIG, g.getOriginalUrl());
-        intent.putExtra(EXTRA_LOCAL, false);
-        return intent;
-    }
-
-    public static Intent newIntent(Context context, String path) {
-        Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(EXTRA_PATH, path);
-        intent.putExtra(EXTRA_LOCAL, true);
+        intent.putExtra(EXTRA_PATH, g.getPath());
+        intent.putExtra(EXTRA_LOCAL, g.getPath() != null);
         return intent;
     }
 

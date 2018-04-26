@@ -56,7 +56,7 @@ public class GifRepositoryImpl implements GifRepository {
     @Override
     public Observable<File> download(String link, String name) {
         return Observable.create(emitter -> {
-            File file = new File(context.getFilesDir(), name);
+            File file = new File(name);
             URL url = null;
             try {
                 url = new URL(link);
@@ -87,21 +87,21 @@ public class GifRepositoryImpl implements GifRepository {
 
     @Override
     public Completable addToFavorites(String id, String path) {
-        return Completable.create(new CompletableOnSubscribe() {
-            @Override
-            public void subscribe(CompletableEmitter emitter) throws Exception {
-                gifDao.insert(new GifDB(id, path));
-                emitter.onComplete();
-            }
+        return Completable.create(emitter -> {
+            gifDao.insert(new GifDB(id, path));
+            emitter.onComplete();
         });
     }
 
     @Override
-    public Flowable<List<String>> getLocalGifs() {
+    public Flowable<List<Gif>> getLocalGifs() {
         return gifDao.getAll().flatMap(l -> {
-            List<String> list = new ArrayList<>();
+            List<Gif> list = new ArrayList<>();
             for (GifDB gifDB : l) {
-                list.add(gifDB.getPath());
+                Gif g = new Gif();
+                g.setId(gifDB.getId());
+                g.setPath(gifDB.getPath());
+                list.add(g);
             }
             return Flowable.fromArray(list);
         });
@@ -122,7 +122,7 @@ public class GifRepositoryImpl implements GifRepository {
     @Override
     public Completable delete(String name) {
         return Completable.create(e -> {
-            File file = new File(context.getFilesDir(), name);
+            File file = new File(name);
             boolean delited = file.delete();
             if (delited) {
                 e.onComplete();
