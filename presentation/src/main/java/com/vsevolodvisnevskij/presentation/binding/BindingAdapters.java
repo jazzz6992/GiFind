@@ -28,6 +28,6 @@ public class BindingAdapters {
     public static void loadImage(ImageView view, String url) {
         if (url == null)
             return;
-        Glide.with(view.getContext()).load(url).into(view);
+        Glide.with(view.getContext()).asGif().load(url).into(view).clearOnDetach();
     }
 }
