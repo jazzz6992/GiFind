@@ -7,6 +7,8 @@
     <string name="add_to_favorite">Add to favorite</string>
     <string name="web" translatable="false">Web</string>
     <string name="favorites">Favorites</string>
+    <string name="connection_problems">There is connection problems. Check your internet connection</string>
+    <string name="unknown_error">Oops… Something went wrong… try again later</string>
     <string-array name="tab_names">
         <item>@string/web</item>
         <item>@string/favorites</item>

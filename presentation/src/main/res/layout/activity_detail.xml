@@ -7,10 +7,11 @@
         <variable
             name="viewModel"
             type="com.vsevolodvisnevskij.presentation.screens.detail.SingleGifViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
-        style="@style/match_parent">
+    <android.support.constraint.ConstraintLayout style="@style/match_parent">
 
         <ImageView
             android:id="@+id/imageView"

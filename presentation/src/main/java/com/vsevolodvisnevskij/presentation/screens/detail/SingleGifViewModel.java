@@ -2,6 +2,7 @@ package com.vsevolodvisnevskij.presentation.screens.detail;
 
 import android.content.Context;
 import android.databinding.ObservableField;
+import android.widget.Toast;
 
 import com.vsevolodvisnevskij.domain.entity.Gif;
 import com.vsevolodvisnevskij.domain.interactors.AddGifToFavoriteUseCase;
@@ -9,10 +10,12 @@ import com.vsevolodvisnevskij.domain.interactors.CheckLocalGifUseCase;
 import com.vsevolodvisnevskij.domain.interactors.DeleteGifFileUseCase;
 import com.vsevolodvisnevskij.domain.interactors.DownloadGifFileUseCase;
 import com.vsevolodvisnevskij.domain.interactors.RemoveGifFromFavoritesUseCase;
+import com.vsevolodvisnevskij.giphy.R;
 import com.vsevolodvisnevskij.presentation.app.App;
 import com.vsevolodvisnevskij.presentation.base.BaseViewModel;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -21,6 +24,7 @@ import io.reactivex.Flowable;
 import io.reactivex.subjects.PublishSubject;
 
 public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
+
     @Inject
     public Context context;
     @Inject
@@ -75,7 +79,7 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
                 if (router != null) {
                     router.navigateToActivityChooser(f);
                 }
-            }));
+            }, this::handleError));
         }
     }
 
@@ -88,6 +92,9 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
             compositeDisposable.add(addGifToFavoriteUseCase.addToFavorites(gif.getId(), file.getAbsolutePath()).subscribe());
         }).subscribe(f -> {
             publishSubject.onNext(Completable.complete());
+        }, e -> {
+            publishSubject.onNext(Completable.error(e));
+            handleError(e);
         }));
     }
 
@@ -100,6 +107,9 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
             } else {
                 router.back();
             }
+        }, e -> {
+            publishSubject.onNext(Completable.error(e));
+            handleError(e);
         }));
     }
 
@@ -130,9 +140,19 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
                 } else {
                     addToFavorite();
                 }
-            }));
+            }, this::handleError));
         } else {
             removeFromFavorites();
         }
+    }
+
+    @Override
+    public void handleError(Throwable e) {
+        if (e instanceof IOException) {
+            errorMessage.set(context.getString(R.string.connection_problems));
+        } else {
+            errorMessage.set(context.getString(R.string.unknown_error));
+        }
+        Toast.makeText(context, errorMessage.get(), Toast.LENGTH_LONG).show();
     }
 }

@@ -6,9 +6,26 @@
         <variable
             name="viewModel"
             type="com.vsevolodvisnevskij.presentation.screens.main.WebGifsViewModel" />
+
+        <import type="android.view.View" />
     </data>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        app:adapter="@{viewModel.getAdapter()}"
-        style="@style/match_parent" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            style="@style/match_parent"
+            android:visibility="@{viewModel.isConnected ? View.VISIBLE : View.GONE}"
+            app:adapter="@{viewModel.getAdapter()}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.errorMessage}"
+            android:visibility="@{viewModel.isConnected ? View.GONE : View.VISIBLE}" />
+    </FrameLayout>
+
+
 </layout>

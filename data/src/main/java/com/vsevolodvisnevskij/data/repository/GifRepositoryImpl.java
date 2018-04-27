@@ -56,30 +56,30 @@ public class GifRepositoryImpl implements GifRepository {
         return Observable.create(emitter -> {
             File file = new File(context.getFilesDir(), name);
             URL url = null;
-            try {
-                url = new URL(link);
-                HttpsURLConnection httpURLConnection = (HttpsURLConnection) url.openConnection();
-                try (InputStream in = httpURLConnection.getInputStream()) {
-                    if (httpURLConnection.getResponseCode() != HttpsURLConnection.HTTP_OK) {
-                        throw new IOException(httpURLConnection.getResponseMessage() + ": with " + link);
-                    }
-                    try (FileOutputStream fos = new FileOutputStream(file)) {
-                        int bufSize;
-                        byte[] buf = new byte[4096];
-                        while ((bufSize = in.read(buf)) > 0) {
-                            fos.write(buf, 0, bufSize);
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    httpURLConnection.disconnect();
+            url = new URL(link);
+            boolean done = false;
+            HttpsURLConnection httpURLConnection = (HttpsURLConnection) url.openConnection();
+            try (InputStream in = httpURLConnection.getInputStream()) {
+                if (httpURLConnection.getResponseCode() != HttpsURLConnection.HTTP_OK) {
+                    throw new IOException(httpURLConnection.getResponseMessage() + ": with " + link);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    int bufSize;
+                    byte[] buf = new byte[4096];
+                    while ((bufSize = in.read(buf)) > 0) {
+                        fos.write(buf, 0, bufSize);
+                    }
+                    done = true;
+                }
+            } finally {
+                httpURLConnection.disconnect();
             }
-            emitter.onNext(file);
-            emitter.onComplete();
+            if (done) {
+                emitter.onNext(file);
+                emitter.onComplete();
+            } else {
+                emitter.onError(new IOException());
+            }
         });
     }
 

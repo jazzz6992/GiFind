@@ -12,6 +12,7 @@ import com.vsevolodvisnevskij.presentation.injection.DaggerAppComponent;
  */
 
 public class App extends Application {
+    public static final String TAG = "my_tag";
 
     private static AppComponent appComponent;
 

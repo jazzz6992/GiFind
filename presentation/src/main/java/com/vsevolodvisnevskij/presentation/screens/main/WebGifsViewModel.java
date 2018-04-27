@@ -1,6 +1,12 @@
 package com.vsevolodvisnevskij.presentation.screens.main;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
+import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -14,6 +20,7 @@ import com.vsevolodvisnevskij.presentation.base.BaseAdapter;
 import com.vsevolodvisnevskij.presentation.base.BaseViewHolder;
 import com.vsevolodvisnevskij.presentation.base.BaseViewModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +34,26 @@ public class WebGifsViewModel extends BaseViewModel<MainRouter> {
 
 
     @Inject
+    Context context;
+    @Inject
     public GetTrandingGifsUseCase getTrandingGifsUseCase;
     @Inject
     public SearchGifsUseCase searchGifsUseCase;
 
     private GifAdapter adapter = new GifAdapter();
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            if (isOnline(context)) {
+                isConnected.set(true);
+                adapter.clear();
+                offset = 0;
+                getNextGifs(String.valueOf(offset));
+            }
+        }
+    };
 
+    public ObservableBoolean isConnected = new ObservableBoolean(true);
     private String search;
     private int offset = 0;
 
@@ -105,13 +126,12 @@ public class WebGifsViewModel extends BaseViewModel<MainRouter> {
         return adapter;
     }
 
-
     private void getNextSearch(String q, String offset) {
-        compositeDisposable.add(searchGifsUseCase.get(q, offset).subscribe(l -> adapter.update(l)));
+        compositeDisposable.add(searchGifsUseCase.get(q, offset).subscribe(l -> adapter.update(l), this::handleError));
     }
 
     private void getNextTranding(String offset) {
-        compositeDisposable.add(getTrandingGifsUseCase.get(offset).subscribe(l -> adapter.update(l)));
+        compositeDisposable.add(getTrandingGifsUseCase.get(offset).subscribe(l -> adapter.update(l), this::handleError));
     }
 
     public void search(String search) {
@@ -127,5 +147,28 @@ public class WebGifsViewModel extends BaseViewModel<MainRouter> {
         } else {
             getNextSearch(search, offset);
         }
+    }
+
+    @Override
+    public void handleError(Throwable e) {
+        isConnected.set(false);
+        if (e instanceof IOException) {
+            errorMessage.set(context.getString(R.string.connection_problems));
+        } else {
+            errorMessage.set(context.getString(R.string.unknown_error));
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        context.registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        context.unregisterReceiver(receiver);
     }
 }

@@ -1,4 +1,4 @@
-package com.vsevolodvisnevskij.data.entity.json;
+package com.vsevolodvisnevskij.data.entity.server_model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

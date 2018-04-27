@@ -1,8 +1,8 @@
 package com.vsevolodvisnevskij.data.net;
 
 
-import com.vsevolodvisnevskij.data.entity.json.Datum;
-import com.vsevolodvisnevskij.data.entity.json.Root;
+import com.vsevolodvisnevskij.data.entity.server_model.Datum;
+import com.vsevolodvisnevskij.data.entity.server_model.Root;
 import com.vsevolodvisnevskij.domain.entity.Gif;
 
 import java.util.ArrayList;

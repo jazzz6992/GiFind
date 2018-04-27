@@ -73,7 +73,7 @@ public class DetailActivity extends BaseMVVMActivity<ActivityDetailBinding, Sing
             }
         }));
         compositeDisposable.add(viewModel.getPublishSubject().subscribe(completable -> {
-            compositeDisposable.add(completable.subscribe(() -> item.setEnabled(true)));
+            compositeDisposable.add(completable.subscribe(() -> item.setEnabled(true), e -> item.setEnabled(true)));
         }));
         return true;
     }
