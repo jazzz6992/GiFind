@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.vsevolodvisnevskij.giphy.R;
 
 /**
  * Created by vsevolodvisnevskij on 22.03.2018.
@@ -28,6 +30,6 @@ public class BindingAdapters {
     public static void loadImage(ImageView view, String url) {
         if (url == null)
             return;
-        Glide.with(view.getContext()).asGif().load(url).into(view).clearOnDetach();
+        Glide.with(view.getContext()).asGif().load(url).apply(new RequestOptions().error(R.drawable.ic_error_outline_24dp)).into(view).clearOnDetach();
     }
 }

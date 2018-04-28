@@ -1,11 +1,13 @@
 package com.vsevolodvisnevskij.presentation.screens.detail;
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vsevolodvisnevskij.domain.entity.Gif;
 import com.vsevolodvisnevskij.giphy.R;
 import com.vsevolodvisnevskij.giphy.databinding.ActivityDetailBinding;
@@ -87,6 +89,14 @@ public class DetailActivity extends BaseMVVMActivity<ActivityDetailBinding, Sing
             case R.id.favorite:
                 viewModel.toFromFavorites();
                 item.setEnabled(false);
+                return true;
+            case R.id.download:
+                RxPermissions rxPermissions = new RxPermissions(this);
+                compositeDisposable.add(rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(b -> {
+                    if (b) {
+                        viewModel.download();
+                    }
+                }));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

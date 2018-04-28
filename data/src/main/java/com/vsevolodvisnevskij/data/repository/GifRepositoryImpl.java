@@ -1,6 +1,7 @@
 package com.vsevolodvisnevskij.data.repository;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.vsevolodvisnevskij.data.constants.Constants;
 import com.vsevolodvisnevskij.data.db.AppDatabase;
@@ -11,6 +12,7 @@ import com.vsevolodvisnevskij.domain.entity.Gif;
 import com.vsevolodvisnevskij.domain.repository.GifRepository;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +23,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.net.ssl.HttpsURLConnection;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
+import io.reactivex.Emitter;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
@@ -136,6 +140,38 @@ public class GifRepositoryImpl implements GifRepository {
         return Completable.create(e -> {
             gifDao.delete(id);
             e.onComplete();
+        });
+    }
+
+    @Override
+    public Completable saveFileToExternalStorage(String name, String path) {
+        return Completable.create(e -> {
+            File source = new File(path);
+            File dest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), name);
+            dest.createNewFile();
+            try (FileInputStream fis = new FileInputStream(source); FileOutputStream fos = new FileOutputStream(dest)) {
+                byte[] buf = new byte[1024];
+                int count;
+                while ((count = fis.read(buf)) > 0) {
+                    fos.write(buf, 0, count);
+                }
+            }
+            e.onComplete();
+        });
+    }
+
+    @Override
+    public Flowable<Gif> getLocalGifById(String id) {
+        return gifDao.getById(id).flatMap(l -> {
+            if (l != null && l.size() > 0) {
+                GifDB gifDB = l.get(0);
+                Gif g = new Gif();
+                g.setId(gifDB.getId());
+                g.setPath(gifDB.getPath());
+                return Flowable.just(g);
+            } else {
+                return Flowable.create(Emitter::onComplete, BackpressureStrategy.LATEST);
+            }
         });
     }
 }

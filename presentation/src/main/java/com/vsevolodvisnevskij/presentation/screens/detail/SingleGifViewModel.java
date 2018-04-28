@@ -9,7 +9,9 @@ import com.vsevolodvisnevskij.domain.interactors.AddGifToFavoriteUseCase;
 import com.vsevolodvisnevskij.domain.interactors.CheckLocalGifUseCase;
 import com.vsevolodvisnevskij.domain.interactors.DeleteGifFileUseCase;
 import com.vsevolodvisnevskij.domain.interactors.DownloadGifFileUseCase;
+import com.vsevolodvisnevskij.domain.interactors.GetLocalGifByIdUseCase;
 import com.vsevolodvisnevskij.domain.interactors.RemoveGifFromFavoritesUseCase;
+import com.vsevolodvisnevskij.domain.interactors.SaveFileToExternalStorageUseCase;
 import com.vsevolodvisnevskij.giphy.R;
 import com.vsevolodvisnevskij.presentation.app.App;
 import com.vsevolodvisnevskij.presentation.base.BaseViewModel;
@@ -37,6 +39,11 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
     public RemoveGifFromFavoritesUseCase removeGifFromFavoritesUseCase;
     @Inject
     public CheckLocalGifUseCase checkLocalGifUseCase;
+    @Inject
+    public SaveFileToExternalStorageUseCase saveFileToExternalStorageUseCase;
+    @Inject
+    public GetLocalGifByIdUseCase getLocalGifByIdUseCase;
+
     private PublishSubject<Completable> publishSubject = PublishSubject.create();
     private boolean local;
     private Gif gif;
@@ -154,5 +161,31 @@ public class SingleGifViewModel extends BaseViewModel<DetailRouter> {
             errorMessage.set(context.getString(R.string.unknown_error));
         }
         Toast.makeText(context, errorMessage.get(), Toast.LENGTH_LONG).show();
+    }
+
+    public void download() {
+        if (local) {
+            compositeDisposable.add(saveFileToExternalStorageUseCase.saveFileToExternalStorage(getFileName(), gif.getPath()).subscribe(this::showDownloadToast, this::handleError));
+        } else {
+            compositeDisposable.add(checkLocalGifUseCase.check(getId()).take(1).subscribe(b -> {
+                if (b) {
+                    compositeDisposable.add(getLocalGifByIdUseCase.getLocalGifById(getId()).take(1).subscribe(g -> {
+                        compositeDisposable.add(saveFileToExternalStorageUseCase.saveFileToExternalStorage(getFileName(), g.getPath()).subscribe(this::showDownloadToast, this::handleError));
+                    }));
+                } else {
+                    compositeDisposable.add(downloadGifFileUseCase.download(getGifUrl(), getFileName()).subscribe(f -> {
+                        compositeDisposable.add(saveFileToExternalStorageUseCase.saveFileToExternalStorage(getFileName(), f.getAbsolutePath()).subscribe(() -> {
+                            showDownloadToast();
+                            compositeDisposable.add(deleteGifFileUseCase.delete(getFileName()).subscribe(() -> {
+                            }, this::handleError));
+                        }, this::handleError));
+                    }, this::handleError));
+                }
+            }));
+        }
+    }
+
+    private void showDownloadToast() {
+        Toast.makeText(context, R.string.file_saved, Toast.LENGTH_SHORT).show();
     }
 }

@@ -8,8 +8,8 @@ android {
         applicationId "com.vsevolodvisnevskij.giphy"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
     }
     buildTypes {
         release {
@@ -42,4 +42,5 @@ dependencies {
     implementation dependancy.cardView
     implementation dependancy.glide
     annotationProcessor dependancy.glideCompiler
+    implementation dependancy.rxPermission
 }

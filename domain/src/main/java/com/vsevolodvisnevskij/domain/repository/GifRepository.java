@@ -29,4 +29,8 @@ public interface GifRepository {
     Completable delete(String name);
 
     Completable removeFromFavorites(String id);
+
+    Completable saveFileToExternalStorage(String name, String path);
+
+    Flowable<Gif> getLocalGifById(String id);
 }
