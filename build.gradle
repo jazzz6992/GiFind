@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
     }
 }
 
@@ -28,7 +28,7 @@ ext {
     rxAndroidVersion = '2.0.2'
     gsonVersion = '2.8.2'
     archComponentVersion = '1.0.0'
-    daggerVersion = '2.15'
+    daggerVersion = '2.21'
     javaInjectVersion = '1'
     retrofitVersion = '2.4.0'
     retrofitRxAdapterVersion = '1.0.0'

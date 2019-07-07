@@ -16,6 +16,8 @@ import com.vsevolodvisnevskij.presentation.base.BaseViewModel;
 public class MainViewModel extends BaseViewModel<BaseRouter> {
 
     private ObservableField<PagerAdapter> pagerAdapter = new ObservableField<>();
+    private WebGifsFragment webGifsFragment = new WebGifsFragment();
+    private LocalGifsFragment localGifsFragment = new LocalGifsFragment();
 
     @Override
     public void createInject() {
@@ -31,9 +33,9 @@ public class MainViewModel extends BaseViewModel<BaseRouter> {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return new WebGifsFragment();
+                        return webGifsFragment;
                     case 1:
-                        return new LocalGifsFragment();
+                        return localGifsFragment;
                 }
                 return null;
             }

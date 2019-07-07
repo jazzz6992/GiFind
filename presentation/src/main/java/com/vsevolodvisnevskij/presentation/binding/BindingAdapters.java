@@ -30,6 +30,6 @@ public class BindingAdapters {
     public static void loadImage(ImageView view, String url) {
         if (url == null)
             return;
-        Glide.with(view.getContext()).asGif().load(url).apply(new RequestOptions().error(R.drawable.ic_error_outline_24dp)).into(view).clearOnDetach();
+        Glide.with(view.getContext()).asGif().load(url).apply(new RequestOptions().placeholder(R.drawable.stub).error(R.drawable.ic_error_outline_24dp)).into(view).clearOnDetach();
     }
 }

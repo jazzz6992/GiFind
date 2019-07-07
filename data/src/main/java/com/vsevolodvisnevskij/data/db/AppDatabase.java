@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase;
 
 import com.vsevolodvisnevskij.data.entity.db.GifDB;
 
-@Database(entities = {GifDB.class}, version = 1)
+@Database(entities = {GifDB.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract GifDao getGifDao();
 }

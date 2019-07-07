@@ -41,14 +41,12 @@ public class WebGifsViewModel extends BaseViewModel<MainRouter> {
     public SearchGifsUseCase searchGifsUseCase;
 
     private GifAdapter adapter = new GifAdapter();
+    //todo создать publishSubject который будет высылать boolean - состояние подключения
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             if (isOnline(context)) {
                 isConnected.set(true);
-                adapter.clear();
-                offset = 0;
-                getNextGifs(String.valueOf(offset));
             }
         }
     };
@@ -151,9 +149,11 @@ public class WebGifsViewModel extends BaseViewModel<MainRouter> {
 
     @Override
     public void handleError(Throwable e) {
-        isConnected.set(false);
         if (e instanceof IOException) {
-            errorMessage.set(context.getString(R.string.connection_problems));
+            if (!isOnline(context)) {
+                isConnected.set(false);
+                errorMessage.set(context.getString(R.string.connection_problems));
+            }
         } else {
             errorMessage.set(context.getString(R.string.unknown_error));
         }

@@ -60,7 +60,7 @@ public class AppModule {
     }
 
     @Provides
-    public GifRepository getGitRepository(Context context, RestService restService, AppDatabase appDatabase) {
+    public GifRepository getGifRepository(Context context, RestService restService, AppDatabase appDatabase) {
         return new GifRepositoryImpl(context, restService, appDatabase);
     }
 

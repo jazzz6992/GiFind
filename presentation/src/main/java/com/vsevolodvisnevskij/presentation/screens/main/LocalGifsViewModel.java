@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.vsevolodvisnevskij.domain.entity.Gif;
 import com.vsevolodvisnevskij.domain.interactors.GetLocalGifsUseCase;
 import com.vsevolodvisnevskij.giphy.R;
-import com.vsevolodvisnevskij.giphy.databinding.PathItemBinding;
+import com.vsevolodvisnevskij.giphy.databinding.GifItemBinding;
 import com.vsevolodvisnevskij.presentation.app.App;
 import com.vsevolodvisnevskij.presentation.base.BaseAdapter;
 import com.vsevolodvisnevskij.presentation.base.BaseViewHolder;
@@ -40,11 +40,11 @@ public class LocalGifsViewModel extends BaseViewModel<MainRouter> {
     }
 
 
-    class PathHolder extends BaseViewHolder<Gif, ItemPathGifViewModel, PathItemBinding> {
-        public PathItemBinding binding;
+    class PathHolder extends BaseViewHolder<Gif, ItemPathGifViewModel, GifItemBinding> {
+        public GifItemBinding binding;
 
 
-        public PathHolder(PathItemBinding binding, ItemPathGifViewModel viewModel) {
+        public PathHolder(GifItemBinding binding, ItemPathGifViewModel viewModel) {
             super(binding, viewModel);
         }
     }
@@ -55,7 +55,7 @@ public class LocalGifsViewModel extends BaseViewModel<MainRouter> {
         @Override
         public PathHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            PathItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.path_item, parent, false);
+            GifItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.gif_item, parent, false);
             return new PathHolder(binding, new ItemPathGifViewModel());
         }
 

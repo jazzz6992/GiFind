@@ -1,7 +1,9 @@
 package com.vsevolodvisnevskij.data.repository;
 
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.os.Environment;
+import android.util.Log;
 
 import com.vsevolodvisnevskij.data.constants.Constants;
 import com.vsevolodvisnevskij.data.db.AppDatabase;
@@ -156,6 +158,11 @@ public class GifRepositoryImpl implements GifRepository {
                     fos.write(buf, 0, count);
                 }
             }
+            MediaScannerConnection.scanFile(context,
+                    new String[]{dest.toString()}, null, (p, uri) -> {
+                        Log.i("ExternalStorage", "Scanned " + p + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    });
             e.onComplete();
         });
     }

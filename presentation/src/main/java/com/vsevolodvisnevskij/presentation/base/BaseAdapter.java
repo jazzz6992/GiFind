@@ -41,10 +41,9 @@ public abstract class BaseAdapter<Model, ViewModel extends BaseItemViewModel<Mod
     @Override
     public void onViewAttachedToWindow(BaseViewHolder<Model, ViewModel, ?> holder) {
         super.onViewAttachedToWindow(holder);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = holder.getAdapterPosition();
+        holder.itemView.setOnClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            if (items.size() > pos) {
                 clickSubject.onNext(items.get(pos));
             }
         });

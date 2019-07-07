@@ -18,9 +18,4 @@ public abstract class BaseUseCase {
         this.postExecutionThread = postExecutionThread.getScheduler();
         threadExecution = Schedulers.io();
     }
-
-    public BaseUseCase(PostExecutionThread postExecutionThread, ThreadExecutor threadExecution) {
-        this.postExecutionThread = postExecutionThread.getScheduler();
-        this.threadExecution = Schedulers.from(threadExecution);
-    }
 }

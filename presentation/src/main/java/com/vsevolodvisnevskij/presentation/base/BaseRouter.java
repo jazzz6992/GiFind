@@ -16,4 +16,8 @@ public class BaseRouter {
     public void back() {
         getActivity().onBackPressed();
     }
+
+    public void releaseActivity() {
+        activity = null;
+    }
 }

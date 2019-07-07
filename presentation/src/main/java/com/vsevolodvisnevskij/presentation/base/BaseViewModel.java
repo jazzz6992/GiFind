@@ -25,6 +25,7 @@ public abstract class BaseViewModel<R extends BaseRouter> extends ViewModel {
     }
 
     public void detachRouter() {
+        router.releaseActivity();
         router = null;
     }
 
